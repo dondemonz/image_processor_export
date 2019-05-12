@@ -50,3 +50,54 @@ def test_image_export_jpg_quality_high_test(fix):
     assert fix.p == tick
     time.sleep(2)
 
+def test_image_export_live_image(fix):
+    tick = "liveImage"
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test4_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live with twodim scale>,process<scale:400,400>").encode("utf-8"))
+    time.sleep(2)
+    fix.search_in_callback(par="request_id")
+    assert fix.p == tick
+    time.sleep(2)
+
+def test_image_export_arhive_and_live_image_task_in_a_row(fix):
+    tick = "archive"
+    time.sleep(1)
+    fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
+    time.sleep(2)
+    m = dt.datetime.now()
+    tm = m.strftime("%Y%m%dT%H%M%S%Z")
+    time.sleep(3)
+    fix.send_react(("CAM|" + camId + "|REC_STOP").encode("utf-8"))
+    time.sleep(7)
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live>").encode("utf-8"))
+    time.sleep(2)
+    #fix.search_in_callback(par="request_id")
+    #assert fix.p == tick
+
+
+    tick1 = "live"
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick1 + ">,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live>").encode("utf-8"))
+    time.sleep(3)
+    #fix.search_all_in_callback(par="request_id")
+    #assert fix.p == tick1
+
+
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick1 + "2>,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "2_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live2>").encode("utf-8"))
+    time.sleep(3)
+    #fix.search_in_callback(par="request_id")
+    #assert fix.p == tick1+"2"
+
+
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick1 + "3>,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "3_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live3>").encode("utf-8"))
+    time.sleep(3)
+    #fix.search_in_callback(par="request_id")
+    #assert fix.p == tick1+"3"
+    fix.search_all_in_callback(par="request_id")
+    assert fix.l[0] == tick
+    assert fix.l[1] == tick1
+    assert fix.l[2] == tick1 + "2"
+    assert fix.l[3] == tick1 + "3"
+    print(fix.l[0])
+    print(fix.l[1])
+    print(fix.l[2])
+    print(fix.l[3])
+
