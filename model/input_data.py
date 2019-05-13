@@ -13,3 +13,4 @@ camName = "test cam"
 pci_channel = "1"
 personId = "1.999"
 departmentId = "1.999"
+IdDB = "1" # id тестовой базы данных, названи таблицы image. В ней должно быть две колонки: 1-я image, 2-я id

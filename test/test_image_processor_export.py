@@ -101,3 +101,22 @@ def test_image_export_arhive_and_live_image_task_in_a_row(fix):
     print(fix.l[2])
     print(fix.l[3])
 
+
+def test_ImageExport_DBImage(fix):
+    tick = "DBImage"
+    time.sleep(1)
+    fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
+    time.sleep(2)
+    m = dt.datetime.now()
+    tm = m.strftime("%Y%m%dT%H%M%S%Z")
+    time.sleep(2)
+    fix.send_react(("CAM|" + camId + "|REC_STOP").encode("utf-8"))
+    time.sleep(3)
+
+    DBstr = IdDB+":INSERT INTO public.image(image) VALUES(?)"
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$"+tm+">,export_engine<sql>,export<"+DBstr+">,export_image<format$png;quality$85>,process<color:200,50,150;penwidth:10;rect:10,20,25,15;font:20;polygon:15,15,20,20>").encode("utf-8"))
+    time.sleep(2)
+    fix.search_in_callback(par="request_id")
+    assert fix.p == tick
+    fix.search_all_in_callback(par="objaction")
+    assert fix.l[2] == "EXPORT_DONE"
