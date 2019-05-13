@@ -68,7 +68,7 @@ def test_image_export_arhive_and_live_image_task_in_a_row(fix):
     time.sleep(3)
     fix.send_react(("CAM|" + camId + "|REC_STOP").encode("utf-8"))
     time.sleep(7)
-    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live>").encode("utf-8"))
+    fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$"+tm+">,export_engine<file>,export<filename$test5_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live>").encode("utf-8"))
     time.sleep(2)
     #fix.search_in_callback(par="request_id")
     #assert fix.p == tick
@@ -96,10 +96,10 @@ def test_image_export_arhive_and_live_image_task_in_a_row(fix):
     assert fix.l[1] == tick1
     assert fix.l[2] == tick1 + "2"
     assert fix.l[3] == tick1 + "3"
-    print(fix.l[0])
-    print(fix.l[1])
-    print(fix.l[2])
-    print(fix.l[3])
+    #print(fix.l[0])
+    #print(fix.l[1])
+    #print(fix.l[2])
+    #print(fix.l[3])
 
 
 def test_ImageExport_DBImage(fix):
