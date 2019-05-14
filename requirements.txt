@@ -7,3 +7,4 @@ requests
 six
 allure-pytest
 selenium
+psycopg2
