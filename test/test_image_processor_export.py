@@ -122,8 +122,6 @@ def test_ImageExport_DBImage(fix):
     fix.search_all_in_callback(par="objaction")
     assert fix.l[2] == "EXPORT_DONE"
 
-
-def test_1():
     db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
     db.check_db()
     time.sleep(1)
