@@ -4,13 +4,14 @@ from contextlib import closing
 from model.input_data import *
 
 
-class DbFixture:
+class DbHelper:
 
-    def __init__(self, host, dbname, user, password):
+    def __init__(self, host=None, dbname=None, user=None, password=None, records=None):
         self.host = host
         self.dbname = dbname
         self.user = user
         self.password = password
+        self.records = records
         self.connection = closing(psycopg2.connect(host=host, dbname=dbname, user=user, password=password))
         self.connection.autocommit = True
 
@@ -18,8 +19,10 @@ class DbFixture:
         with self.connection as conn:
             with conn.cursor(cursor_factory=DictCursor) as cursor:
                 cursor.execute('SELECT * FROM image WHERE tid=%s', (tid,))
-                records = cursor.fetchall()
-        print(records)
+                self.records = cursor.fetchall()
+                # print(self.records)
+        return 0
+
 
 
     def clean_db(self):

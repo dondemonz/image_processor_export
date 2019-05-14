@@ -1,7 +1,7 @@
 from model.input_data import *
 import time
 import datetime as dt
-from fixture.work_with_db import DbFixture
+from fixture.work_with_db import DbHelper
 
 
 def test_image_export_procces_test(fix):
@@ -122,6 +122,10 @@ def test_ImageExport_DBImage(fix):
     fix.search_all_in_callback(par="objaction")
     assert fix.l[2] == "EXPORT_DONE"
 
-    db = DbFixture(host="localhost", dbname="image", user="postgres", password="postgres")
+
+def test_1():
+    db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
     db.check_db()
+    time.sleep(1)
+    assert db.records != []
     time.sleep(1)
