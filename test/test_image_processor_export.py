@@ -4,7 +4,7 @@ import datetime as dt
 from fixture.work_with_db import DbHelper
 
 
-def test_image_export_procces_test(fix):
+def test1_image_export_procces_test(fix):
     tick = "procces_test"
     time.sleep(1)
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
@@ -21,7 +21,7 @@ def test_image_export_procces_test(fix):
     assert fix.p == tick
 
 
-def test_image_export_jpg_quality_low_test(fix):
+def test2_image_export_jpg_quality_low_test(fix):
     tick = "low_jpg_test"
     time.sleep(1)
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
@@ -37,7 +37,7 @@ def test_image_export_jpg_quality_low_test(fix):
     assert fix.p == tick
 
 
-def test_image_export_jpg_quality_high_test(fix):
+def test3_image_export_jpg_quality_high_test(fix):
     tick = "high_jpg_test"
     time.sleep(1)
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
@@ -53,7 +53,7 @@ def test_image_export_jpg_quality_high_test(fix):
     assert fix.p == tick
     time.sleep(2)
 
-def test_image_export_live_image(fix):
+def test4_image_export_live_image(fix):
     tick = "liveImage"
     fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test4_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live with twodim scale>,process<scale:400,400>").encode("utf-8"))
     time.sleep(2)
@@ -61,7 +61,7 @@ def test_image_export_live_image(fix):
     assert fix.p == tick
     time.sleep(2)
 
-def test_image_export_arhive_and_live_image_task_in_a_row(fix):
+def test5_image_export_arhive_and_live_image_task_in_a_row(fix):
     tick = "archive"
     time.sleep(1)
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
@@ -105,7 +105,7 @@ def test_image_export_arhive_and_live_image_task_in_a_row(fix):
     #print(fix.l[3])
 
 
-def test_ImageExport_DBImage(fix):
+def test6_ImageExport_DBImage(fix):
     tick = "DBImage"
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
     time.sleep(2)
