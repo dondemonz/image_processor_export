@@ -1,8 +1,12 @@
 from model.input_data import *
 import time
 import datetime as dt
+import winreg
 from fixture.work_with_db import DbHelper
 
+def test_create_key_and_pareams():   # изменяет параемтр в реестре, после теста в restapi. на downloadTImeout 5 т.к. с 2 иногда не проходит тест
+    key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\ISS\\SecurOS\\Niss400\\ImageProcessor")
+    winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '7')
 
 def test1_image_export_procces_test(fix):
     tick = "procces_test"
@@ -17,7 +21,7 @@ def test1_image_export_procces_test(fix):
     fix.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$"+tm+">,export_engine<file>,export<filename$test1_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$png;quality$85>,process<color:200,50,150;penwidth:10;rect:10,20,25,15;crop:0,0,95,95;font:20;polygon:15,15,20,20,25,20,20,90,70,25,40,40,55,55;polyline:90,85,80,81,75,90,50,50;text:15,75,blabla test>,caption<15:ahaha test blabla \n phah testtest bla 123123111!!!>").encode("utf-8"))
     time.sleep(3)
     fix.search_in_callback(par="request_id")
-    time.sleep(1)
+    time.sleep(3)
     assert fix.p == tick
 
 
