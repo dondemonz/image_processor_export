@@ -6,7 +6,7 @@ from fixture.work_with_db import DbHelper
 
 def test_create_key_and_pareams():   # изменяет параемтр в реестре, после теста в restapi. на downloadTImeout 5 т.к. с 2 иногда не проходит тест
     key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\ISS\\SecurOS\\Niss400\\ImageProcessor")
-    winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '7')
+    winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '10')
 
 def test1_image_export_procces_test(fix):
     tick = "procces_test"
