@@ -15,3 +15,4 @@ personId = "1.999"
 departmentId = "1.999"
 IdDB = "1" # id тестовой базы данных, названи таблицы image. В ней должно быть две колонки: 1-я image, 2-я id
 tid = "1"
+registrpath = "SOFTWARE\\WOW6432Node\\ISS\\SecurOS\\Niss400\\ImageProcessor"

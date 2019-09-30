@@ -23,6 +23,6 @@ def test_create_environment(fix):
     time.sleep(5)
 
 def test_create_key_and_pareams():   # изменяет параемтр в реестре, после теста в restapi. на downloadTImeout 5 т.к. с 2 иногда не проходит тест
-    key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\ISS\\SecurOS\\Niss400\\ImageProcessor")
+    key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, registrpath)
     winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '4')
 
