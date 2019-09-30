@@ -4,8 +4,8 @@ import datetime as dt
 from fixture.work_with_db import DbHelper
 
 
-def test1_image_export_procces_test(fix):
-    tick = "procces_test"
+def test1_image_export_process_test(fix):
+    tick = "process_test"
     time.sleep(1)
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
     time.sleep(2)
