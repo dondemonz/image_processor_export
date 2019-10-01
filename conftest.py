@@ -1,6 +1,11 @@
 from fixture.load_dll import DllHelper
 from fixture.work_with_db import DbHelper
+from model.input_data import *
 import pytest
+import os
+import time
+import winreg
+import shutil
 
 
 @pytest.fixture
@@ -16,3 +21,34 @@ def fixdb(request):
     # функция disconnect передается в качестве параметра
     request.addfinalizer()
     return fixture
+
+@pytest.fixture(scope="session", autouse=True)
+def fix2(request):
+    # Должен быть создан интерфейс iidk
+    # Должен быть пользователь с полными правами
+    fix = DllHelper()
+    fix.send_event(message=("CORE||CREATE_OBJECT|objtype<IMAGE_EXPORT>,objid<" + objId + ">,parent_id<" + slave + ">,name<Test_Image_Processor>").encode("utf-8"))
+    fix.send_event(message=("CORE||CREATE_OBJECT|objtype<GRABBER>,objid<" + camId + ">,parent_id<" + slave + ">,name<" + camName + ">,type<Virtual>,chan<01>").encode("utf-8"))
+    fix.send_event(message=("CORE||CREATE_OBJECT|objtype<CAM>,objid<" + camId + ">,parent_id<" + camId + ">,name<" + camName + ">").encode("utf-8"))
+    # fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<" + IdDB + ">,parent_id<" + camId + ">,name<" + camName + ">").encode("utf-8"))
+    # fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<1>,parent_id<1>,name<1>").encode("utf-8"))
+
+    # создание папки для экспорта тестов cam_get_cam_image
+    if not os.path.exists("C:\\TEST\\"):
+        os.mkdir("C:\\TEST\\")
+        print("Directory ", "C:\\TEST\\", " Created ")
+    else:
+        print("Directory ", "C:\\TEST\\", " already exists")
+    time.sleep(5)
+    key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, registrpath)
+    winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '4')
+    print('\nSome recource')
+    def fin():
+        fix.send_event(message=("CORE||DELETE_OBJECT|objtype<IMAGE_EXPORT>,objid<" + objId + ">").encode("utf-8"))
+        fix.send_event(message=("CORE||DELETE_OBJECT|objtype<GRABBER>,objid<" + camId + ">").encode("utf-8"))
+        shutil.rmtree(str(dir))
+        db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
+        db.clean_db()
+        print('\nSome resource fin')
+    request.addfinalizer(fin)
+    return request
