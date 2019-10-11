@@ -13,6 +13,6 @@ camName = "test cam"
 pci_channel = "1"
 personId = "1.999"
 departmentId = "1.999"
-IdDB = "1" # id тестовой базы данных, названи таблицы image. В ней должно быть две колонки: 1-я image, 2-я id
+IdDB = "1"  # id тестовой базы данных, названи таблицы image. В ней должно быть две колонки: image (bytea), tid (integer) в любом порядке, в настройках компа должны быть корректные настройки.
 tid = "1"
 registrpath = "SOFTWARE\\WOW6432Node\\ISS\\SecurOS\\Niss400\\ImageProcessor"

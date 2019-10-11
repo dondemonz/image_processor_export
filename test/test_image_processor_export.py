@@ -106,6 +106,13 @@ def test5_image_export_arhive_and_live_image_task_in_a_row(fix):
 
 
 def test6_ImageExport_DBImage(fix):
+    # этот тест после завершения самого теста висит еще около 5-8 секунд, вероятно что-то с соединениями с бд, не закрывается? решить проблему не удалось.
+    db = DbHelper(host="localhost", user="postgres", password="postgres")
+    db.create_db()
+    db = DbHelper(host="localhost", user="postgres", dbname="image", password="postgres")
+    time.sleep(5)
+    db.create_tables()
+
     tick = "DBImage"
     fix.send_react(("CAM|" + camId + "|REC").encode("utf-8"))
     time.sleep(2)
@@ -123,8 +130,11 @@ def test6_ImageExport_DBImage(fix):
     fix.search_all_in_callback(par="objaction")
     assert fix.l[2] == "EXPORT_DONE"
 
-    db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
+    db = DbHelper(host="localhost", user="postgres", dbname="image", password="postgres")
     db.check_db()
     time.sleep(1)
     assert db.records != []
     time.sleep(1)
+
+    db.drop_db()
+

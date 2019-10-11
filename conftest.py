@@ -30,8 +30,9 @@ def fix2(request):
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<IMAGE_EXPORT>,objid<" + objId + ">,parent_id<" + slave + ">,name<Test_Image_Processor>").encode("utf-8"))
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<GRABBER>,objid<" + camId + ">,parent_id<" + slave + ">,name<" + camName + ">,type<Virtual>,chan<01>").encode("utf-8"))
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<CAM>,objid<" + camId + ">,parent_id<" + camId + ">,name<" + camName + ">").encode("utf-8"))
-    # fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<" + IdDB + ">,parent_id<" + camId + ">,name<" + camName + ">").encode("utf-8"))
-    # fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<1>,parent_id<1>,name<1>").encode("utf-8"))
+    fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<" + IdDB + ">,name<" + IdDB + ">").encode("utf-8"))
+    fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<1>,parent_id<1>,name<1>,dbname<image>,user<postgres>,pass<@iss	EDJPCALGCEPGMCDJAFCEEHIJDDFANJGE>").encode("utf-8"))
+
 
     # создание папки для экспорта тестов cam_get_cam_image
     if not os.path.exists("C:\\TEST\\"):
@@ -41,14 +42,15 @@ def fix2(request):
         print("Directory ", "C:\\TEST\\", " already exists")
     time.sleep(5)
     key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, registrpath)
-    winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '4')
+    winreg.SetValueEx(key, 'downloadTimeout', 0, winreg.REG_SZ, '6')
     print('\nSome recource')
+
     def fin():
         fix.send_event(message=("CORE||DELETE_OBJECT|objtype<IMAGE_EXPORT>,objid<" + objId + ">").encode("utf-8"))
         fix.send_event(message=("CORE||DELETE_OBJECT|objtype<GRABBER>,objid<" + camId + ">").encode("utf-8"))
         shutil.rmtree(str(dir))
-        db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
-        db.clean_db()
+        #db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
+        #db.clean_db()
         print('\nSome resource fin')
     request.addfinalizer(fin)
     return request
