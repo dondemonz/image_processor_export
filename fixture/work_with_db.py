@@ -23,6 +23,8 @@ class DbHelper:
         con = psycopg2.connect(dbname='postgres', user=self.user, host=self.host, password=self.password)
         con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)  # <-- ADD THIS LINE
         cur = con.cursor()
+        # Удалить БД если уже есть
+        cur.execute('DROP DATABASE IF EXISTS image')
         # Use the psycopg2.sql module instead of string concatenation
         # in order to avoid sql injection attacs.
         cur.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(self.image)))
