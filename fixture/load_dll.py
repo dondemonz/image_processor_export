@@ -44,12 +44,14 @@ class DllHelper:
             if search(par+'<{}>', param) != None:
                 self.p = search(par+'<{}>', param)
                 self.p = self.p.fixed[0]
-                return 0
+                self.list.clear()
+
     """
         l = ':'.join(r.fixed[0] for r in findall(par+'<{}>', str(self.list)))
     """
     def search_all_in_callback(self, par):
         self.l = re.findall(par+"<(.*?)>", str(self.list))
+        self.list.clear()
         return 0
 
 

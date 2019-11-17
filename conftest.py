@@ -1,5 +1,6 @@
 from fixture.load_dll import DllHelper
 from fixture.work_with_db import DbHelper
+from fixture.react import ReactHelper
 from model.input_data import *
 import pytest
 import os
@@ -8,11 +9,17 @@ import winreg
 import shutil
 
 
-@pytest.fixture
-def fix(request):
+@pytest.fixture(scope="session", autouse=True)
+def fix_dll(request):
     fixture = DllHelper()
     # функция disconnect передается в качестве параметра
     request.addfinalizer(fixture.disconnect)
+    return fixture
+
+@pytest.fixture(scope="session")
+def fix_react(request):
+    fixture = ReactHelper()
+    #request.addfinalizer(fixture.destroy)
     return fixture
 
 @pytest.fixture
@@ -52,5 +59,6 @@ def fix2(request):
         #db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
         #db.clean_db()
         print('\nSome resource fin')
+        fix.disconnect()
     request.addfinalizer(fin)
     return request
