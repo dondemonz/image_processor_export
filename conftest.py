@@ -17,16 +17,17 @@ def fix_dll(request):
     return fixture
 
 @pytest.fixture(scope="session")
-def fix_react(request):
+def fix_react():
     fixture = ReactHelper()
     #request.addfinalizer(fixture.destroy)
     return fixture
 
-@pytest.fixture
-def fixdb(request):
-    fixture = DbHelper()
-    # функция disconnect передается в качестве параметра
-    request.addfinalizer()
+@pytest.fixture(scope="session")
+def fix_db(request):
+    fixture = DbHelper(host="localhost", user="postgres", password="postgres")
+    def fin():
+        fixture.drop_db()
+    request.addfinalizer(fin)
     return fixture
 
 @pytest.fixture(scope="session", autouse=True)

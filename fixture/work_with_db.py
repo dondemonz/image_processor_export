@@ -4,6 +4,7 @@ from contextlib import closing
 from model.input_data import *
 from psycopg2 import sql
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+import time
 
 
 class DbHelper:
@@ -17,7 +18,6 @@ class DbHelper:
         self.connection = closing(psycopg2.connect(host=host, dbname=dbname, user=user, password=password))
         self.connection.autocommit = True
         self.image = 'image'
-
 
     def create_db(self):
         con = psycopg2.connect(dbname='postgres', user=self.user, host=self.host, password=self.password)
@@ -35,14 +35,11 @@ class DbHelper:
                 cursor.execute('CREATE TABLE IF NOT EXISTS public.image(tid integer, image bytea)')
                 conn.commit()
 
-
-
     def drop_db(self):
         con = psycopg2.connect(dbname='postgres', user=self.user, host=self.host, password=self.password)
         con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cur = con.cursor()
         cur.execute(sql.SQL("DROP DATABASE {}").format(sql.Identifier(self.image)))
-
 
     def check_db(self):
         with self.connection as conn:
@@ -52,10 +49,15 @@ class DbHelper:
                 # print(self.records)
         return 0
 
-
-
     def clean_db(self):
         with self.connection as conn:
             with conn.cursor() as cursor:
                 cursor.execute('DELETE FROM image WHERE tid=%s', (tid,))
                 conn.commit()
+
+    def create_db_and_tables(self):
+        db = DbHelper(host="localhost", user="postgres", password="postgres")
+        db.create_db()
+        db = DbHelper(host="localhost", user="postgres", dbname="image", password="postgres")
+        time.sleep(5)
+        db.create_tables()

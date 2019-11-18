@@ -44,30 +44,17 @@ def test4_image_export_live_image(fix_dll):
 
 def test5_image_export_arhive_and_live_image_task_in_a_row(fix_dll, fix_react):
     tick = "archive"
+    tick1 = "live"
     tm = fix_react.create_record_and_timestamp(fix_dll)
     fix_dll.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$" + tm + ">,export_engine<file>,export<filename$test5_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live>").encode("utf-8"))
     time.sleep(2)
-    #fix.search_in_callback(par="request_id")
-    #assert fix.p == tick
-
-
-    tick1 = "live"
     fix_dll.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick1 + ">,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live>").encode("utf-8"))
     time.sleep(3)
-    #fix.search_all_in_callback(par="request_id")
-    #assert fix.p == tick1
-
-
     fix_dll.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick1 + "2>,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "2_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live2>").encode("utf-8"))
     time.sleep(3)
-    #fix.search_in_callback(par="request_id")
-    #assert fix.p == tick1+"2"
-
-
     fix_dll.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick1 + "3>,import<cam$" + camId + ";time$live>,export_engine<file>,export<filename$test5_export_" + tick + "3_on_cam" + camId + ";dir$" + dir + ">,export_image<format$jpg;quality$100>,caption<25:live3>").encode("utf-8"))
     time.sleep(3)
-    #fix.search_in_callback(par="request_id")
-    #assert fix.p == tick1+"3"
+
     fix_dll.search_all_in_callback(par="request_id")
     assert fix_dll.l[0] == tick
     assert fix_dll.l[1] == tick1
@@ -76,14 +63,9 @@ def test5_image_export_arhive_and_live_image_task_in_a_row(fix_dll, fix_react):
     #print(fix.l[0])
 
 
-def test6_ImageExport_DBImage(fix_dll, fix_react):
-    db = DbHelper(host="localhost", user="postgres", password="postgres")
-    db.create_db()
-    db = DbHelper(host="localhost", user="postgres", dbname="image", password="postgres")
-    time.sleep(5)
-    db.create_tables()
-
+def test6_ImageExport_DBImage(fix_dll, fix_react, fix_db):
     tick = "DBImage"
+    fix_db.create_db_and_tables()
     tm = fix_react.create_record_and_timestamp(fix_dll)
 
     DBstr = IdDB+":INSERT INTO public.image(image, tid) VALUES(?, '"+tid+"')"
@@ -98,6 +80,8 @@ def test6_ImageExport_DBImage(fix_dll, fix_react):
     time.sleep(1)
     assert db.records != []
     time.sleep(1)
+    #db.drop_db()
 
-    db.drop_db()
+
+
 
