@@ -67,20 +67,16 @@ def test6_ImageExport_DBImage(fix_dll, fix_react, fix_db):
     tick = "DBImage"
     fix_db.create_db_and_tables()
     tm = fix_react.create_record_and_timestamp(fix_dll)
-
     DBstr = IdDB+":INSERT INTO public.image(image, tid) VALUES(?, '"+tid+"')"
     fix_dll.send_react(("IMAGE_EXPORT|" + objId + "|EXPORT|request_id<" + tick + ">,import<cam$" + camId + ";time$" + tm + ">,export_engine<sql>,export<" + DBstr + ">,export_image<format$png;quality$85>,process<color:200,50,150;penwidth:10;rect:10,20,25,15;font:20;polygon:15,15,20,20>").encode("utf-8"))
     time.sleep(3)
     fix_dll.search_in_callback(par="request_id")
     assert fix_dll.p == tick
+    fix_db.check_db()
+    time.sleep(1)
+    assert fix_db.records != []
 
 
-    db = DbHelper(host="localhost", user="postgres", dbname="image", password="postgres")
-    db.check_db()
-    time.sleep(1)
-    assert db.records != []
-    time.sleep(1)
-    #db.drop_db()
 
 
 

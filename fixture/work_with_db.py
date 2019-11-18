@@ -34,6 +34,7 @@ class DbHelper:
             with conn.cursor() as cursor:
                 cursor.execute('CREATE TABLE IF NOT EXISTS public.image(tid integer, image bytea)')
                 conn.commit()
+                # cursor.close()
 
     def drop_db(self):
         con = psycopg2.connect(dbname='postgres', user=self.user, host=self.host, password=self.password)
@@ -42,10 +43,12 @@ class DbHelper:
         cur.execute(sql.SQL("DROP DATABASE {}").format(sql.Identifier(self.image)))
 
     def check_db(self):
-        with self.connection as conn:
+        db = DbHelper(host="localhost", user="postgres", dbname="image", password="postgres")
+
+        with db.connection as conn:
             with conn.cursor(cursor_factory=DictCursor) as cursor:
                 cursor.execute('SELECT * FROM image WHERE tid=%s', (tid,))
-                self.records = cursor.fetchall()
+                db.records = cursor.fetchall()
                 # print(self.records)
         return 0
 
