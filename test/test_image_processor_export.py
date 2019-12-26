@@ -65,6 +65,7 @@ def test5_image_export_arhive_and_live_image_task_in_a_row(fix_dll, fix_react):
 
 
 def test6_ImageExport_DBImage(fix_dll, fix_react, fix_db):
+    time.sleep(5)
     tick = "DBImage"
     db_str = IdDB + ":INSERT INTO public.image(image, tid) VALUES(?, '" + tid + "')"
     fix_db.create_db_and_tables()
