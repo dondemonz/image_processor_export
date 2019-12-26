@@ -48,9 +48,9 @@ class DbHelper:
         with db.connection as conn:
             with conn.cursor(cursor_factory=DictCursor) as cursor:
                 cursor.execute('SELECT * FROM image WHERE tid=%s', (tid,))
-                db.records = cursor.fetchall()
+                self.records = cursor.fetchall()
                 # print(self.records)
-        return 0
+
 
     def clean_db(self):
         with self.connection as conn:
