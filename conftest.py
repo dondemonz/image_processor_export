@@ -17,6 +17,10 @@ def fix_dll(request):
     return fixture
 
 @pytest.fixture(scope="session")
+def file_name():
+    return file_name()
+
+@pytest.fixture(scope="session")
 def fix_react():
     fixture = ReactHelper()
     #request.addfinalizer(fixture.destroy)
