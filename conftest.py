@@ -16,9 +16,10 @@ def fix_dll(request):
     request.addfinalizer(fixture.disconnect)
     return fixture
 
-@pytest.fixture(scope="session")
-def file_name():
-    return file_name()
+
+class FileName:
+    file_name = None
+
 
 @pytest.fixture(scope="session")
 def fix_react():
