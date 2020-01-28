@@ -49,6 +49,8 @@ class DllHelper:
     """
         l = ':'.join(r.fixed[0] for r in findall(par+'<{}>', str(self.list)))
     """
+    #Сделал специально параметризованный, чтобы можно было искать любой параметр и было возможно из теста это видеть,
+    #но пока в тестах ищется один и тот же request_id, стоит ли прописать параметр тут и убрать 1 строчку из каждого теста - пока не знаю
     def search_all_in_callback(self, par):
         self.l = re.findall(par+"<(.*?)>", str(self.list))
         self.list.clear()
