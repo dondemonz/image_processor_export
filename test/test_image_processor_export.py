@@ -62,7 +62,6 @@ def test5_image_export_arhive_and_live_image_task_in_a_row(fix_dll, fix_react):
 def test6_ImageExport_DBImage(fix_dll, fix_react, fix_db):
     tick1 = "DBImage"
     db_str = IdDB + ":INSERT INTO public.image(image, tid) VALUES(?, '" + tid + "')"
-    fix_db.create_db_and_tables()
     tm = fix_react.create_record_and_timestamp(fix_dll)
     fix_react.send_user_react(export_image_data="format$png;quality$85", fix_dll=fix_dll, tick1=tick1, tm_name="time$", tm=tm, fn=db_str, export_engine="sql", process_data="color:200,50,150;penwidth:10;rect:10,20,25,15;font:20;polygon:15,15,20,20", camId_n="", dir_n="", dir_d="")
 

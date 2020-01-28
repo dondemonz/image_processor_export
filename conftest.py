@@ -27,6 +27,7 @@ def fix_react():
 @pytest.fixture(scope="session")
 def fix_db(request):
     fixture = DbHelper(host="localhost", user="postgres", password="postgres")
+    fixture.create_db_and_tables()
     def fin():
         fixture.drop_db()
     request.addfinalizer(fin)
