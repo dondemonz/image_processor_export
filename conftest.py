@@ -39,9 +39,13 @@ def fix2(request):
     # Должен быть пользователь с полными правами
     fix = DllHelper()
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<IMAGE_EXPORT>,objid<" + objId + ">,parent_id<" + slave + ">,name<Test_Image_Processor>").encode("utf-8"))
+    time.sleep(1)
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<GRABBER>,objid<" + camId + ">,parent_id<" + slave + ">,name<" + camName + ">,type<Virtual>,chan<01>").encode("utf-8"))
+    time.sleep(1)
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<CAM>,objid<" + camId + ">,parent_id<" + camId + ">,name<" + camName + ">").encode("utf-8"))
+    time.sleep(1)
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<" + IdDB + ">,name<" + IdDB + ">").encode("utf-8"))
+    time.sleep(1)
     fix.send_event(message=("CORE||CREATE_OBJECT|objtype<DATABASE>,objid<1>,parent_id<1>,name<1>,dbname<image>,user<postgres>,pass<@iss	EDJPCALGCEPGMCDJAFCEEHIJDDFANJGE>").encode("utf-8"))
 
 
@@ -58,6 +62,7 @@ def fix2(request):
 
     def fin():
         fix.send_event(message=("CORE||DELETE_OBJECT|objtype<IMAGE_EXPORT>,objid<" + objId + ">").encode("utf-8"))
+        time.sleep(1)
         fix.send_event(message=("CORE||DELETE_OBJECT|objtype<GRABBER>,objid<" + camId + ">").encode("utf-8"))
         shutil.rmtree(str(dir))
         #db = DbHelper(host="localhost", dbname="image", user="postgres", password="postgres")
