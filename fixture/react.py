@@ -16,7 +16,7 @@ class ReactHelper:
         tm = m.strftime("%Y%m%dT%H%M%S%Z")
         time.sleep(3)
         fix.send_react(("CAM|" + camId + "|REC_STOP").encode("utf-8"))
-        time.sleep(7)
+        time.sleep(10)
         return tm
 
     def send_user_react(self, caption_data="", export_image_data=None, fix_dll=None, process_data="", tick1="", tick="", tm_name="", tm="", export_engine="file", fn="filename$", file_name="", camId_n=camId, dir_n=";dir$", dir_d=dir):
